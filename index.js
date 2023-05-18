@@ -51,8 +51,15 @@ async function run() {
       if (req.query?.email) {
         query = { sellerEmail: req.query.email };
       }
-      console.log(req.query.email);
+
       const result = await toysCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.delete("/toys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await toysCollection.deleteOne(query);
       res.send(result);
     });
     // Send a ping to confirm a successful connection
