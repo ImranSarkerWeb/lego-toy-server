@@ -46,6 +46,14 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/categorytoys/:cat", async (req, res) => {
+      const cat = req.params.cat;
+      const query = { category: { $eq: cat } };
+      const cursor = toysCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     app.get("/mytoys", async (req, res) => {
       let query = {};
       if (req.query?.email) {
