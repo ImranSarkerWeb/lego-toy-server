@@ -56,6 +56,32 @@ async function run() {
       res.send(result);
     });
 
+    app.patch("/toys/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedToy = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const finalUpdate = {
+        $set: {
+          toyName: updatedToy.toyName,
+          //   photo: updatedToy.photo,
+          //   sellerEmail: updatedToy.sellerEmail,
+          //   sellerName: updatedToy.sellerName,
+          //   rating: updatedToy.rating,
+          //   price: updatedToy.price,
+          //   category: updatedToy.category,
+          //   desciption: updatedToy.desciption,
+          //   qty: updatedToy.qty,
+        },
+      };
+      const result = await toysCollection.updateOne(
+        filter,
+        finalUpdate,
+        options
+      );
+      res.send(result);
+    });
+
     app.delete("/toys/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
