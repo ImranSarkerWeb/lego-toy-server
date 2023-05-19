@@ -28,7 +28,6 @@ async function run() {
 
     app.post("/toys", async (req, res) => {
       const toy = req.body;
-      console.log(toy);
       const result = await toysCollection.insertOne(toy);
       res.send(result);
     });
@@ -71,15 +70,9 @@ async function run() {
       const options = { upsert: true };
       const finalUpdate = {
         $set: {
-          toyName: updatedToy.toyName,
-          //   photo: updatedToy.photo,
-          //   sellerEmail: updatedToy.sellerEmail,
-          //   sellerName: updatedToy.sellerName,
-          //   rating: updatedToy.rating,
-          //   price: updatedToy.price,
-          //   category: updatedToy.category,
-          //   desciption: updatedToy.desciption,
-          //   qty: updatedToy.qty,
+          price: updatedToy.price,
+          desciption: updatedToy.desciption,
+          qty: updatedToy.qty,
         },
       };
       const result = await toysCollection.updateOne(
