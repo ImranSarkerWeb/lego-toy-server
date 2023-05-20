@@ -63,6 +63,26 @@ async function run() {
       res.send(result);
     });
 
+    //sorting implementation
+    app.get("/mysortedtoys", async (req, res) => {
+      let query = {};
+      let flag;
+      let pipeline;
+      if (req.query?.email) {
+        query = { sellerEmail: req.query.email };
+        flag = req.query.sort;
+        if (flag == "true") {
+          pipeline = [{ $match: query }, { $sort: { price: 1 } }];
+        } else {
+          pipeline = [{ $match: query }, { $sort: { price: -1 } }];
+        }
+      }
+
+      const result = await toysCollection.aggregate(pipeline).toArray();
+
+      res.send(result);
+    });
+
     app.get("/search", async (req, res) => {
       let query = {};
       if (req.query?.q) {
