@@ -23,7 +23,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     const toysCollection = client.db("legoDB").collection("toys");
 
     app.post("/toys", async (req, res) => {
@@ -60,6 +60,21 @@ async function run() {
       }
 
       const result = await toysCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.get("/search", async (req, res) => {
+      let query = {};
+      if (req.query?.q) {
+        const searchQuery = req.query.q;
+        const regexPattern = new RegExp(searchQuery, "i");
+        query = { toyName: regexPattern };
+      }
+
+      const cursor = toysCollection.find(query);
+
+      const result = await cursor.toArray();
+
       res.send(result);
     });
 
